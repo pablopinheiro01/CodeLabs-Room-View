@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         ).get(TaskListViewModel::class.java)
 
         viewModel.alltasks.observe(this, {
-            Log.d("MyTask", it.toString())
+            Log.i("MyTask", it.toString())
             Toast.makeText(this, it.size.toString(), Toast.LENGTH_LONG).show()
         })
 

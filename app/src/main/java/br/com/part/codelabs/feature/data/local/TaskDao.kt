@@ -14,5 +14,5 @@ interface TaskDao {
     fun getAllTasks(): LiveData<List<TaskDto>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(taskDto: TaskDto)
+    suspend fun insert(taskDto: TaskDto)
 }
