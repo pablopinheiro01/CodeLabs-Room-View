@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import br.com.part.codelabs.feature.data.entity.TaskDto
 import br.com.part.codelabs.feature.presentation.TaskListViewModel
 
@@ -25,6 +26,8 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, it.size.toString(), Toast.LENGTH_LONG).show()
         })
 
-        viewModel.addTask(TaskDto(name = "test"))
+//        viewModel.viewModelScope.let {
+//            viewModel.addTask(TaskDto(name = "test"))
+//        }
     }
 }
