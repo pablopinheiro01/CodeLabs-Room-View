@@ -6,6 +6,7 @@ import br.com.part.codelabs.CdlApplication
 import br.com.part.codelabs.base.AppDataBase
 import br.com.part.codelabs.feature.data.TaskRepository
 import br.com.part.codelabs.feature.data.entity.TaskDto
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 
@@ -21,7 +22,7 @@ class TaskListViewModel (application: Application): AndroidViewModel(application
     }
 
     fun addTask(taskDto: TaskDto){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             repository.addTask(taskDto)
         }
     }

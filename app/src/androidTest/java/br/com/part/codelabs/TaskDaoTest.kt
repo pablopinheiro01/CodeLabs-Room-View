@@ -115,5 +115,18 @@ class TaskDaoTest {
         assertNotEquals(task.id,allTasks[0])
     }
 
+    @Test
+    fun update(){
+        //Given
+        taskDao.insert(task)
+        val allTasks = taskDao.getAllTasks().waitForValue()
+        val updateTask = allTasks[0].copy(name = "ALTERADO")
+        //When
+        taskDao.update(updateTask)
+        //Then
+        val refreshTasks = taskDao.getAllTasks().waitForValue()
+        assertEquals(refreshTasks[0].name, updateTask.name)
+    }
+
 
 }
