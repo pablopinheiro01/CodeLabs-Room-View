@@ -1,20 +1,18 @@
 package br.com.part.codelabs.feature.list.presentation.ui
 
-import android.app.ActivityManager
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
-import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import br.com.part.codelabs.CdlApplication
 import br.com.part.codelabs.R
 import br.com.part.codelabs.add.ui.TaskAddActivity
 import br.com.part.codelabs.detail.ui.TaskDetailActivity
-import br.com.part.codelabs.feature.data.entity.TaskDto
+import br.com.part.codelabs.feature.presentation.FilterIntent
 import br.com.part.codelabs.feature.presentation.TaskListViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -48,8 +46,8 @@ class TaskListActivity : AppCompatActivity() {
                 TaskAddActivity.start( this )
             startActivity(intent)
         }
-        Log.i("TaskListActivity", "Criando uma nova task")
-        viewModel.addTask(TaskDto(name = "Testando"))
+//        Log.i("TaskListActivity", "Criando uma nova task")
+//        viewModel.addTask(TaskDto(name = "Testando"))
 
     }
 
@@ -62,6 +60,21 @@ class TaskListActivity : AppCompatActivity() {
         viewModel.alltasks.observe(this, Observer {
             adapter.submit(it)
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_task_list, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.action_delete_all -> viewModel.deleteAll()
+            R.id.action_order -> viewModel.filter(FilterIntent.DESC)
+            R.id.action_order_date -> viewModel.filter(FilterIntent.DATE)
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return false
     }
 
 }

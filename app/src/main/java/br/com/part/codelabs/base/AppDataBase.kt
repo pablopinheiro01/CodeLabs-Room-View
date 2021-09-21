@@ -7,6 +7,7 @@ import br.com.part.codelabs.feature.data.entity.TaskDto
 import br.com.part.codelabs.feature.data.local.TaskDao
 
 @Database(entities = [TaskDto::class], version = 1, exportSchema = false)
+@TypeConverters(DateConverters::class)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao

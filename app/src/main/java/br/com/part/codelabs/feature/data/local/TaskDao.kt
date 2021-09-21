@@ -25,4 +25,10 @@ interface TaskDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(taskDto: TaskDto)
 
+    @Query("SELECT * FROM task_table ORDER BY name DESC")
+    fun getAllTasksOderByDesc(): LiveData<List<TaskDto>>
+
+    @Query("SELECT * FROM task_table ORDER BY date ASC")
+    fun getAllTasksOrderByDate(): LiveData<List<TaskDto>>
+
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        app:showAsAction="collapseActionView"
+        android:id="@+id/action_delete_all"
+        android:icon="@drawable/ic_baseline_delete_all_24"
+        android:title="Delete All"
+        />
+
+    <item
+        app:showAsAction="collapseActionView"
+        android:id="@+id/action_order"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        android:title="Order by DESC"
+        />
+    <item
+        app:showAsAction="collapseActionView"
+        android:id="@+id/action_order_date"
+        android:icon="@drawable/ic_baseline_filter_list_24"
+        android:title="Order by Date"/>
+
+
+</menu>

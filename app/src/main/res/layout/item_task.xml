@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/txtItemTaskName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +28,16 @@
         app:layout_constraintStart_toStartOf="@id/txtItemTaskName"
         app:layout_constraintTop_toBottomOf="@id/txtItemTaskName"
         tools:text="TODO"/>
+
+    <TextView
+        android:id="@+id/txtItemTaskDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtItemTaskName"
+        tools:text="12.07.2021"/>
 
     <View
         android:layout_width="match_parent"

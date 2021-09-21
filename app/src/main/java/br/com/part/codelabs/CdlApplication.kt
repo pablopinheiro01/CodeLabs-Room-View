@@ -1,6 +1,7 @@
 package br.com.part.codelabs
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 class CdlApplication: Application() {
 
@@ -11,5 +12,6 @@ class CdlApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        AndroidThreeTen.init(this)
     }
 }

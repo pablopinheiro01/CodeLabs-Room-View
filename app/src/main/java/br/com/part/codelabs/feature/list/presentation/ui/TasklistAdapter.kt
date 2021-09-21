@@ -27,12 +27,15 @@ class TasklistAdapter internal constructor(
 
         private val taskItemNameView: TextView = itemView.findViewById(R.id.txtItemTaskName)
         private val taskItemStatusView: TextView = itemView.findViewById(R.id.txtItemTaskStatus)
+        private val taskItemDateView:TextView = itemView.findViewById(R.id.txtItemTaskDate)
+
         private lateinit var taskDto: TaskDto
 
         fun bind(data: TaskDto){
             taskDto = data
             taskItemNameView.text = data.name
             taskItemStatusView.text = data.state
+            taskItemDateView.text = data.date?.toLocalDate().toString()
 
             itemView.setOnClickListener{
                 listener.invoke(taskDto.id)
