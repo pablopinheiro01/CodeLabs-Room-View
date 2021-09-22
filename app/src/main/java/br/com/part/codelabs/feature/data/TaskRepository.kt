@@ -11,8 +11,8 @@ class TaskRepository private constructor(
 ) {
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun addTask(taskDto: TaskDto){
-        localDataSource.insert(taskDto)
+    suspend fun addTask(taskDto: TaskDto):Long {
+        return localDataSource.insert(taskDto)
     }
 
     fun getAllTasks(): LiveData<List<TaskDto>> = localDataSource.getAllTasks()

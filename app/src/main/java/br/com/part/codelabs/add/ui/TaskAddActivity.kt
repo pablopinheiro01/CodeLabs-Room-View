@@ -2,13 +2,19 @@ package br.com.part.codelabs.add.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import br.com.part.codelabs.CdlApplication
 import br.com.part.codelabs.R
@@ -17,14 +23,17 @@ import br.com.part.codelabs.feature.DatePickerFragment
 import br.com.part.codelabs.feature.TimePickerFragment
 import br.com.part.codelabs.feature.data.entity.TaskDateDto
 import br.com.part.codelabs.feature.data.entity.TaskDto
+import br.com.part.codelabs.job.NotificationJobService
 import com.google.android.material.snackbar.Snackbar
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.temporal.ChronoUnit
 
 class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener  {
 
     private lateinit var viewModel: TaskAddViewModel
     private var taskDate: TaskDateDto = TaskDateDto()
+    private lateinit var taskDto: TaskDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +56,12 @@ class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         btnTaskNewSave.setOnClickListener{
             val name = edtTaskDetailName.text.toString()
             if(name.isNotEmpty()){
-                var offsetDateTime: OffsetDateTime? = null
-                if(taskDate.isDateReady() && taskDate.isTimeReady()){
-                    offsetDateTime = setTaskDateTime(taskDate)
-                }else{
+                if(!taskDate.isDateReady() || !taskDate.isTimeReady()){
                     Toast.makeText(this, "Create Task without date", Toast.LENGTH_LONG).show()
+                }else{
+                    taskDto = TaskDto( name =  name, date = setTaskDateTime(taskDate))
+                    viewModel.insert(taskDto)
                 }
-                viewModel.insert(TaskDto(name = name, date = offsetDateTime))
-                finish()
             }else{
                 Snackbar.make(edtTaskDetailName, "Name is required", Snackbar.LENGTH_LONG).show()
             }
@@ -67,6 +74,43 @@ class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         txtTaskNewTime.setOnClickListener {
             showTimePickerDialog()
         }
+
+        //observer para configurar o jobScheduller quando for criado uma nova task
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.taskId.observe(this, Observer {
+            if(taskDate.isDateReady() && taskDate.isTimeReady()){
+                createScheduler(taskDto.copy(id = it))
+            }else{
+                Toast.makeText(this, "Create Task without date", Toast.LENGTH_LONG).show()
+            }
+            finish()
+        })
+    }
+
+    private fun createScheduler(taskDto: TaskDto) {
+        //criar um scheduler para o sistema
+        val scheduler = getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val serviceName = ComponentName(packageName, "NotificationJobService")
+        //calcular o tempo do scheduler para exibição
+        val timeTilFuture = ChronoUnit.MILLIS.between(OffsetDateTime.now(), taskDto.date)
+
+        //criar um scheduler buind info
+        val builder = JobInfo.Builder(taskDto.id.toInt(), serviceName)
+            .setMinimumLatency(timeTilFuture)
+
+        //criar extras para envio
+        val extras = PersistableBundle()
+        extras.putString(SCHEDULE_EXTRA_TASK_NAME, taskDto.name)
+
+        //montar o schedule job
+        val jobInfo = builder.setExtras(extras)
+            .build()
+
+        scheduler.schedule(jobInfo)
+
     }
 
     private fun showDatePickerDialog(){
@@ -99,6 +143,7 @@ class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     }
 
     companion object{
+        const val SCHEDULE_EXTRA_TASK_NAME = "SCHEDULE_EXTRA_TASK_NAME"
         fun start(context:Context): Intent {
             return Intent(context, TaskAddActivity::class.java)
         }
@@ -113,4 +158,6 @@ class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
         taskDate = taskDate.copy(hour = hourOfDay, minute = minute)
         findViewById<TextView>(R.id.txtTaskNewTime).text = "$hourOfDay:$minute"
     }
+
+
 }

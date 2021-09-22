@@ -4,10 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/pablo/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/simple_spinner_dropdown_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/drawable/rounded_blue.xml" value="0.3828125" />
+        <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/drawable/rounded_green.xml" value="0.3828125" />
+        <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/drawable/rounded_orange.xml" value="0.3828125" />
         <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/activity_main.xml" value="0.3651041666666667" />
         <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/activity_task_add.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/activity_task_detail.xml" value="0.35208333333333336" />
-        <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/activity_task_list.xml" value="0.536" />
+        <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/activity_task_list.xml" value="0.3722060252672498" />
         <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/item_status.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/layout/item_task.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/pablo/Desktop/workspace-android-reviesao-arquitetura/codelabs-room-livedata-viewmodel/app/src/main/res/menu/menu_task_detail.xml" value="0.36666666666666664" />

@@ -1,10 +1,7 @@
 package br.com.part.codelabs.add
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import br.com.part.codelabs.CdlApplication
 import br.com.part.codelabs.base.AppDataBase
 import br.com.part.codelabs.feature.data.TaskRepository
@@ -16,6 +13,7 @@ import java.lang.IllegalArgumentException
 class TaskAddViewModel(application: Application ) : AndroidViewModel(application) {
 
     private val repository :TaskRepository
+    val taskId = MutableLiveData<Long>()
 
     init {
         val dao = AppDataBase.getDataBase(application).taskDao()
@@ -24,7 +22,9 @@ class TaskAddViewModel(application: Application ) : AndroidViewModel(application
 
     fun insert(task: TaskDto){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addTask(task)
+            taskId.postValue(
+                repository.addTask(task)
+            )
         }
     }
 

@@ -58,6 +58,7 @@ class TaskListActivity : AppCompatActivity() {
 
     private fun setObserver(){
         viewModel.alltasks.observe(this, Observer {
+            Log.i("TASKLISTACTIVITY","$it")
             adapter.submit(it)
         })
     }

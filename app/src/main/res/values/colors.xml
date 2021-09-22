@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="buttonLabel">#FFFFFF</color>
 
+    <color name="blue">#0000CD</color>
+    <color name="green">#32CD32</color>
+    <color name="orange">#DAA520</color>
+
 </resources>

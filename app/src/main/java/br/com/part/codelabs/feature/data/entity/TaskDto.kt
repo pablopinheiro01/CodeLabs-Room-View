@@ -15,5 +15,13 @@ data class TaskDto(
 enum class Status {
     TODO,
     PROGRESS,
-    DONE
+    DONE,
+    UNDEFINED;
+
+    companion object{
+        fun setValueOf(name: String): Status {
+            return values()
+                .find { it.name.equals(name, ignoreCase = true) } ?: UNDEFINED
+        }
+    }
 }

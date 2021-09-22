@@ -14,7 +14,7 @@ interface TaskDao {
     fun getTaskById(id: Long): LiveData<TaskDto>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(taskDto: TaskDto)
+    fun insert(taskDto: TaskDto): Long
 
     @Query("DELETE FROM task_table")
     fun deletaAll()

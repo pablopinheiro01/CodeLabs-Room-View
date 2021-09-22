@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.part.codelabs.feature.data.entity.TaskDto
 import java.util.*
 import br.com.part.codelabs.R
+import br.com.part.codelabs.components.StatusView
 import br.com.part.codelabs.extensions.convertToTaskDateDto
+import br.com.part.codelabs.feature.data.entity.Status
 
 
 class TasklistAdapter internal constructor(
@@ -27,7 +29,7 @@ class TasklistAdapter internal constructor(
     ): RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val taskItemNameView: TextView = itemView.findViewById(R.id.txtItemTaskName)
-        private val taskItemStatusView: TextView = itemView.findViewById(R.id.txtItemTaskStatus)
+        private val taskItemStatusView: StatusView = itemView.findViewById(R.id.txtItemTaskStatus)
         private val taskItemDateView:TextView = itemView.findViewById(R.id.txtItemTaskDate)
 
         private lateinit var taskDto: TaskDto
@@ -36,6 +38,7 @@ class TasklistAdapter internal constructor(
             taskDto = data
             taskItemNameView.text = data.name
             taskItemStatusView.text = data.state
+            taskItemStatusView.setStatus(Status.setValueOf(data.state))
             taskItemDateView.text = (data.date?.convertToTaskDateDto()?.getDateTimeSt() ?: "").toString()
 
             itemView.setOnClickListener{
