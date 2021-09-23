@@ -16,6 +16,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import br.com.part.codelabs.CdlApplication
 import br.com.part.codelabs.R
 import br.com.part.codelabs.add.TaskAddViewModel
@@ -24,9 +27,11 @@ import br.com.part.codelabs.feature.TimePickerFragment
 import br.com.part.codelabs.feature.data.entity.TaskDateDto
 import br.com.part.codelabs.feature.data.entity.TaskDto
 import br.com.part.codelabs.job.NotificationJobService
+import br.com.part.codelabs.job.NotificationsWorkManager
 import com.google.android.material.snackbar.Snackbar
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener  {
@@ -34,6 +39,9 @@ class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private lateinit var viewModel: TaskAddViewModel
     private var taskDate: TaskDateDto = TaskDateDto()
     private lateinit var taskDto: TaskDto
+
+    private val workManager = WorkManager.getInstance(application)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,12 +90,30 @@ class TaskAddActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener,
     private fun setupObserver() {
         viewModel.taskId.observe(this, Observer {
             if(taskDate.isDateReady() && taskDate.isTimeReady()){
-                createScheduler(taskDto.copy(id = it))
+                //metodo para criar um JobScheduler
+//                createScheduler(taskDto.copy(id = it))
+                //metodo para criar um WorkManager
+                createWorkManager(taskDto.copy(id = it))
             }else{
                 Toast.makeText(this, "Create Task without date", Toast.LENGTH_LONG).show()
             }
             finish()
         })
+    }
+
+    private fun createWorkManager(task: TaskDto) {
+        val timeTilFuture = ChronoUnit.MILLIS.between(OffsetDateTime.now(), task.date)
+
+        val data = Data.Builder()
+        data.putString(SCHEDULE_EXTRA_TASK_NAME, task.name)
+
+        val workRequest = OneTimeWorkRequest.Builder(NotificationsWorkManager::class.java)
+            .setInitialDelay(timeTilFuture, TimeUnit.MILLISECONDS)
+            .setInputData(data.build())
+            .addTag(taskDto.id.toString())
+            .build()
+
+        workManager.enqueue(workRequest)
     }
 
     private fun createScheduler(taskDto: TaskDto) {
